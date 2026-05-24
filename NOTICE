@@ -1,0 +1,7 @@
+This project is not the official SQLite repository.
+
+SQLite source files, including sqlite3.c, sqlite3.h, sqlite3ext.h and shell.c,
+are in the public domain.
+
+The CMake wrapper files and documentation in this repository are licensed under
+the Apache License, Version 2.0.
