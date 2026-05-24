@@ -1,30 +1,32 @@
 # sqlite3-cmake
 
-一个给 SQLite3 amalgamation 源码提供 CMake 构建支持的小项目。
+[English](./README.md) | [中文](./README_CN.md)
 
-它可以方便地生成：
+A small CMake wrapper project for the SQLite3 amalgamation source code.
+
+It provides a convenient way to build:
 
 - `sqlite3.lib` / `libsqlite3.a`
-- 可选的 `sqlite3.exe` / `sqlite3` 命令行工具
-- CMake target：`SQLite::SQLite3`
-- 安装后的 CMake package，支持 `find_package(SQLite3 CONFIG REQUIRED)`
+- optional `sqlite3.exe` / `sqlite3` command-line shell
+- CMake target: `SQLite::SQLite3`
+- installable CMake package with `find_package(SQLite3 CONFIG REQUIRED)` support
 
-> 本项目不是 SQLite 官方仓库，只是为 SQLite3 amalgamation 源码提供一个更方便的 CMake 包装。
-
----
-
-## 功能
-
-- 支持 Windows / Linux / macOS
-- 支持 `add_subdirectory()` 方式集成
-- 支持 `find_package(SQLite3 CONFIG REQUIRED)` 方式集成
-- 支持可选构建 SQLite 命令行工具
-- 默认关闭 SQLite load extension API
-- 默认构建静态库
+> This project is not the official SQLite repository. It only provides a convenient CMake wrapper for the SQLite3 amalgamation source code.
 
 ---
 
-## 目录结构
+## Features
+
+- Supports Windows / Linux / macOS
+- Supports integration via `add_subdirectory()`
+- Supports integration via `find_package(SQLite3 CONFIG REQUIRED)`
+- Supports optional SQLite command-line shell build
+- Disables the SQLite load extension API by default
+- Builds a static library by default
+
+---
+
+## Directory Structure
 
 ```text
 sqlite3-cmake/
@@ -40,15 +42,15 @@ sqlite3-cmake/
 
 ---
 
-## 作为子模块使用
+## Using as a Submodule
 
-把本项目放到你的工程中，例如：
+Place this project inside your project, for example:
 
 ```text
 third_party/sqlite3-cmake
 ```
 
-然后在你的 `CMakeLists.txt` 中：
+Then add it in your `CMakeLists.txt`:
 
 ```cmake
 add_subdirectory(third_party/sqlite3-cmake)
@@ -56,7 +58,7 @@ add_subdirectory(third_party/sqlite3-cmake)
 target_link_libraries(your_app PRIVATE SQLite::SQLite3)
 ```
 
-代码中直接包含：
+Include SQLite directly in your source code:
 
 ```cpp
 #include <sqlite3.h>
@@ -64,9 +66,9 @@ target_link_libraries(your_app PRIVATE SQLite::SQLite3)
 
 ---
 
-## 单独编译
+## Standalone Build
 
-默认只编译 SQLite 静态库：
+By default, only the SQLite static library is built:
 
 ```powershell
 cmake -B build -S .
@@ -78,9 +80,9 @@ cmake --build build --config Debug
 
 ---
 
-## 构建 sqlite3 命令行工具
+## Building the sqlite3 Command-Line Shell
 
-如果需要生成 `sqlite3.exe` / `sqlite3`：
+To build `sqlite3.exe` / `sqlite3`:
 
 ```powershell
 cmake -B build -S . -DSQLITE_BUILD_SHELL=ON
@@ -90,37 +92,37 @@ cmake -B build -S . -DSQLITE_BUILD_SHELL=ON
 cmake --build build --config Debug
 ```
 
-Windows 下生成位置通常是：
+On Windows, the output is usually located at:
 
 ```text
 build/Debug/sqlite3.exe
 ```
 
-Ninja 生成器下通常是：
+With the Ninja generator, the output is usually located at:
 
 ```text
 build/sqlite3.exe
 ```
 
-运行测试：
+Run it for testing:
 
 ```powershell
 .\build\Debug\sqlite3.exe
 ```
 
-进入 SQLite shell 后可以输入：
+After entering the SQLite shell, type:
 
 ```sql
 .exit
 ```
 
-退出。
+to exit.
 
 ---
 
-## 安装
+## Installation
 
-可以安装到指定目录：
+You can install the library to a specified directory:
 
 ```powershell
 cmake -B build -S . -DSQLITE_BUILD_SHELL=ON -DCMAKE_INSTALL_PREFIX=install
@@ -134,7 +136,7 @@ cmake --build build --config Debug
 cmake --install build --config Debug
 ```
 
-安装后目录结构类似：
+The installed directory will look like this:
 
 ```text
 install/
@@ -154,9 +156,9 @@ install/
 
 ---
 
-## 使用 find_package 集成
+## Using with find_package
 
-安装后，其他 CMake 项目可以这样使用：
+After installation, other CMake projects can use it like this:
 
 ```cmake
 find_package(SQLite3 CONFIG REQUIRED)
@@ -166,7 +168,7 @@ add_executable(app main.cpp)
 target_link_libraries(app PRIVATE SQLite::SQLite3)
 ```
 
-配置项目时指定安装路径：
+Configure the project with the install path:
 
 ```powershell
 cmake -B build -S . -DCMAKE_PREFIX_PATH=D:/Project/sqlite3-cmake/install
@@ -174,9 +176,9 @@ cmake -B build -S . -DCMAKE_PREFIX_PATH=D:/Project/sqlite3-cmake/install
 
 ---
 
-## 测试代码
+## Test Code
 
-`main.cpp`：
+`main.cpp`:
 
 ```cpp
 #include <sqlite3.h>
@@ -196,19 +198,19 @@ int main()
 
 ---
 
-## CMake 选项
+## CMake Options
 
-| 选项                             |              默认值 | 说明                             |
-| ------------------------------ | ---------------: | ------------------------------ |
-| `SQLITE_BUILD_SHELL`           |            `OFF` | 是否构建 `sqlite3` 命令行工具           |
-| `SQLITE_ENABLE_LOAD_EXTENSION` |            `OFF` | 是否启用 SQLite load extension API |
-| `SQLITE_INSTALL`               |             `ON` | 是否安装库、头文件和工具                   |
-| `SQLITE_INSTALL_PACKAGE`       |             `ON` | 是否安装 CMake package config      |
-| `SQLITE_INSTALL_EXPORT_SET`    | `SQLite3Targets` | CMake export set 名称            |
+| Option                         |          Default | Description                             |
+| ------------------------------ | ---------------: | --------------------------------------- |
+| `SQLITE_BUILD_SHELL`           |            `OFF` | Build the `sqlite3` command-line shell  |
+| `SQLITE_ENABLE_LOAD_EXTENSION` |            `OFF` | Enable the SQLite load extension API    |
+| `SQLITE_INSTALL`               |             `ON` | Install the library, headers, and tools |
+| `SQLITE_INSTALL_PACKAGE`       |             `ON` | Install the CMake package config files  |
+| `SQLITE_INSTALL_EXPORT_SET`    | `SQLite3Targets` | CMake export set name                   |
 
 ---
 
-## 示例：只构建库
+## Example: Build Library Only
 
 ```powershell
 cmake -B build -S .
@@ -216,7 +218,7 @@ cmake -B build -S .
 
 ---
 
-## 示例：构建库和 sqlite3.exe
+## Example: Build Library and sqlite3.exe
 
 ```powershell
 cmake -B build -S . -DSQLITE_BUILD_SHELL=ON
@@ -224,13 +226,13 @@ cmake -B build -S . -DSQLITE_BUILD_SHELL=ON
 
 ---
 
-## 示例：安装并给其他项目 find_package 使用
+## Example: Install and Use with find_package
 
 ```powershell
 cmake -B build -S . -DSQLITE_BUILD_SHELL=ON -DCMAKE_INSTALL_PREFIX=install; cmake --build build --config Debug; cmake --install build --config Debug
 ```
 
-其他项目：
+In another project:
 
 ```cmake
 find_package(SQLite3 CONFIG REQUIRED)
@@ -240,10 +242,10 @@ target_link_libraries(app PRIVATE SQLite::SQLite3)
 
 ---
 
-## 许可证
+## License
 
-本项目中的 CMake 构建脚本、README、NOTICE 等包装代码使用 Apache License 2.0。
+The CMake build scripts, README, NOTICE, and other wrapper files in this project are licensed under the Apache License 2.0.
 
-SQLite 源码文件，包括 `sqlite3.c`、`sqlite3.h`、`sqlite3ext.h`、`shell.c`，属于 Public Domain。
+The SQLite source files, including `sqlite3.c`, `sqlite3.h`, `sqlite3ext.h`, and `shell.c`, are in the Public Domain.
 
-本项目不是 [SQLite](https://sqlite.org/) 官方仓库，也不修改 SQLite 源码，只是为 [SQLite3 amalgamation](https://sqlite.org/download.html) 源码提供 CMake 构建支持。
+This project is not the official [SQLite](https://sqlite.org/) repository and does not modify the SQLite source code. It only provides CMake build support for the [SQLite Amalgamation](https://sqlite.org/download.html) source code.
